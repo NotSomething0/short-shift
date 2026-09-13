@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { navigate } from "astro/virtual-modules/transitions-router.js";
   import type { Series, SeriesList } from "../../../database/series";
 
   import { actions } from "astro:actions";
@@ -16,8 +17,13 @@
 
   let search = $state("");
 
-  async function followSeries(series: Series) {
+  async function followSeries(series: Series, button: HTMLButtonElement) {
     if (followedSeriesList.includes(series.id)) return;
+
+    const orignalHTML = button.innerHTML;
+
+    button.disabled = true;
+    button.innerHTML = `<span class="animate-spin">⏳</span> Following...`;
 
     const { error } = await actions.profile.followSeriesById(series.id);
 
@@ -26,6 +32,9 @@
       console.error(error.message);
       return;
     }
+
+    button.innerHTML = orignalHTML;
+    button.innerText = "Following";
 
     followedSeriesList.push(series.id);
   }
@@ -45,19 +54,19 @@
   });
 </script>
 
-<section class="max-w-screen">
-  <input
-    type="text"
-    placeholder="Search series..."
-    bind:value={search}
-    class="p-4 m-4 w-full bg-white/2 rounded-2xl border border-white/10 text-white focus:outline-none"
-  />
-
+<section class="p-6">
   {#if loading}
     <p class="text-center text-white">Loading series data sit tight</p>
   {:else}
+    <input
+      type="text"
+      placeholder="Search series..."
+      bind:value={search}
+      class="p-4 w-full bg-white/2 rounded-2xl border border-white/10 text-white focus:outline-none"
+    />
+
     <!-- Grid -->
-    <div class="grid md:grid-cols-2 gap-5 p-4">
+    <div class="grid md:grid-cols-3 lg:grid-cols-4 gap-5 mt-4">
       {#each filteredSeries as item (item.id)}
         <div class="rounded-2xl border border-white/10 bg-white/2 p-6">
           <div class="flex flex-row justify-between">
@@ -75,13 +84,19 @@
           </p>
 
           <button
-            onclick={() => followSeries(item)}
-            class="w-full text-white rounded-md mt-2 bg-orange-600 hover:bg-orange-500 cursor-pointer p-1"
+            onclick={(event) => followSeries(item, event.currentTarget)}
+            class="w-full py-2.5 mt-2 rounded-md font-bold bg-orange-600 hover:bg-orange-500 text-center text-white cursor-pointer"
           >
-            {item.category ? "Following" : "Follow"}
+            Follow
           </button>
         </div>
       {/each}
     </div>
+
+    {#if followedSeriesList.length}
+      <div class="flex flex-row justify-end">
+        <button class="rounded-md text-white bg-orange-600 hover:bg-orange-500 p-2 cursor-pointer" onclick={() => navigate("/app")}>Continue</button>
+      </div>
+    {/if}
   {/if}
 </section>
