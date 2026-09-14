@@ -6,6 +6,8 @@
   import SeriesModal from "../../../SeriesModal.svelte";
   import DeleteConfirmationModal from "./DeleteConfirmationModal.svelte";
 
+  const SERIES_PER_PAGE = 4;
+
   let loading = $state(false);
   let loadingError = $state(false);
   let seriesModalState:
@@ -16,6 +18,17 @@
 
   let allSeries = $state<SeriesList>([]);
   let filteredSeries = $state<SeriesList>([]);
+
+  let currentPage = $state(0);
+  let totalPages = $derived(Math.ceil(filteredSeries.length / SERIES_PER_PAGE));
+  let displayedPage = $derived(totalPages === 0 ? 0 : currentPage + 1);
+  let pagedSeries = $derived(
+    filteredSeries.slice(
+      currentPage * SERIES_PER_PAGE,
+      (currentPage + 1) * SERIES_PER_PAGE,
+    ),
+  );
+
   let seriesToDelete = $state<Series | null>(null);
   let searchTerm = $state("");
 
@@ -89,8 +102,17 @@
   onMount(load);
 </script>
 
-<div class="bg-[#111111] border border-white/10 w-screen p-6">
-  <h1 class="text-xl font-bold text-white mb-2">Series Manager</h1>
+<div class="bg-[#111111] border border-white/10 w-screen p-4">
+  <div class="flex justify-between mb-2">
+    <h1 class="text-xl font-bold text-white">Series Manager</h1>
+    <button
+      aria-label="Add new series"
+      class="p-2 rounded-md bg-orange-600 hover:bg-orange-500 text-white font-bold cursor-pointer"
+      onclick={() => (seriesModalState = { mode: "add", data: null })}
+    >
+      Create Series
+  </button>
+  </div>
 
   <input
     type="text"
@@ -130,7 +152,7 @@
             </td>
           </tr>
         {:else}
-          {#each filteredSeries as series (series.id)}
+          {#each pagedSeries as series (series.id)}
             <tr class="border-t border-white/5">
               <th scope="row" class="font-medium text-white">
                 {series.name}
@@ -160,18 +182,38 @@
               </td>
             </tr>
           {/each}
+          {#each Array.from({ length: SERIES_PER_PAGE - pagedSeries.length })}
+            <tr aria-hidden="true" class="border-t border-white/5">
+              <td colspan="4" class="h-26"></td>
+            </tr>
+          {/each}
         {/if}
       </tbody>
+       <tfoot>
+        <tr>
+          <td colspan="3" class="border-t border-white/10 text-white p-5">
+            Page {displayedPage} of {totalPages}
+          </td>
+          <td class="border-t border-white/10 text-right p-5">
+            <div class="flex justify-end gap-2">
+              <button
+                onclick={() => (currentPage -= 1)}
+                disabled={currentPage < 1}
+                class="px-4 py-2 bg-orange-600 hover:bg-orange-500 rounded-md text-white disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                >Previous</button
+              >
+              <button
+                onclick={() => (currentPage += 1)}
+                disabled={currentPage + 1 >= totalPages}
+                class="px-4 py-2 bg-orange-600 hover:bg-orange-500 rounded-md text-white disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                >Next</button
+              >
+            </div>
+          </td>
+        </tr>
+      </tfoot>
     </table>
   </div>
-
-  <button
-    aria-label="Add new series"
-    class="w-full mt-3 py-3 rounded-xl bg-orange-600 hover:bg-orange-500 text-white font-bold cursor-pointer"
-    onclick={() => (seriesModalState = { mode: "add", data: null })}
-  >
-    + Create Series
-  </button>
 </div>
 
 {#if seriesModalState}
