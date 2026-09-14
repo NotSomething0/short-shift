@@ -61,8 +61,6 @@
     }
 
     onCommit(draft);
-    //@todo: we shouldn't need to close the modal manually since onCommit should just do this
-    closeModal();
   }
 </script>
 
@@ -107,6 +105,7 @@
       <label for="" class="text-white">
         Status:
         <select
+          bind:value={draft.status}
           name=""
           id=""
           class="w-full px-4 py-2 rounded-xl bg-white/5 text-white focus:outline-none mt-1 cursor-pointer"
@@ -120,6 +119,7 @@
       <label for="" class="text-white">
         Category:
         <select
+          bind:value={draft.category}
           name=""
           id=""
           class="w-full px-4 py-2 rounded-xl bg-white/5 text-white focus:outline-none mt-1 cursor-pointer"
