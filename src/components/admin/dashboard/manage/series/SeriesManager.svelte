@@ -59,6 +59,7 @@
     allSeries = allSeries.map((_series) =>
       _series.id === data.id ? { ..._series, ...data } : _series,
     );
+    seriesModalState = null;
   }
 
   async function load() {
