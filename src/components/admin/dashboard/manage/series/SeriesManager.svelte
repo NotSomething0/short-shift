@@ -1,10 +1,10 @@
 <script lang="ts">
+  import type { Series, SeriesList } from "../../../../../database/series";
+
   import { onMount } from "svelte";
   import { actions } from "astro:actions";
   import SeriesModal from "../../../SeriesModal.svelte";
   import DeleteConfirmationModal from "./DeleteConfirmationModal.svelte";
-
-  import type { Series, SeriesList } from "../../../../../database/series";
 
   let loading = $state(false);
   let loadingError = $state(false);
@@ -48,16 +48,16 @@
     seriesToDelete = null;
   }
 
-  async function updateSeries(seriesData: any) {
-    const { data, error } = await actions.series.updateSeries(seriesData);
+  async function updateSeries(series: Series) {
+    const { data, error } = await actions.series.updateSeries(series);
 
     if (error) {
       console.error("Failed to update series:", error);
       return;
     }
 
-    allSeries = allSeries.map((s) =>
-      s.id === data.id ? { ...s, ...data } : s,
+    allSeries = allSeries.map((_series) =>
+      _series.id === data.id ? { ..._series, ...data } : _series,
     );
   }
 
