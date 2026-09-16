@@ -1,16 +1,14 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import DiscoverSeries from "../../components/app/onboarding/DiscoverSeries.svelte";
+import { actions } from "astro:actions";
 
 const { data, error } = await Astro.locals.supabase.auth.getUser();
 
 if (!data || error) return Astro.redirect("/login");
 
-const { data: profile, error: profileError } = await Astro.locals.supabase
-  .from("profiles")
-  .select()
-  .eq("user_id", data.user.id)
-  .single();
+const { data: profile, error: profileError } =
+  await Astro.callAction(actions.profile.getProfile, {});
 
 if (profileError) {
   console.error(
@@ -20,22 +18,22 @@ if (profileError) {
 }
 ---
 
-<Layout title="Track Time | Welcome">
+<Layout title="Track Time | Onboarding">
   <header
     class="flex p-4 justify-between bg-[#111111] border-b border-white/10 italic"
   >
     <a href="/app/onboarding" class="text-4xl font-black tracking-tighter">
-      <span class="text-[#FF2800]">TRACK</span>
-      <span class="text-[#FF8000]">TIME</span>
+      <span class="text-[#FF2800]">Short</span>
+      <span class="text-[#FF8000]">Shift</span>
     </a>
   </header>
 
-  <main class="flex flex-col h-screen bg-[#111111]">
-    <h2 class="text-white text-2xl font-bold px-4 py-2">
+  <main class="flex flex-col h-screen bg-[#111111] p-6">
+    <h2 class="text-white text-2xl font-bold">
       Welcome {profile?.username ?? "Unknown"}!
     </h2>
 
-    <p class="text-white px-4">
+    <p class="text-white">
       Your personalized racing calendar is currently empty. Select at least one
       motorsport series you want to track below.
     </p>
