@@ -4,6 +4,9 @@ import { handlePostgrestError } from "$lib/supabase";
 import * as profile from "../database/profile";
 
 export default {
+  getProfile: defineAction({
+    handler: async (_, context) => await profile.getProfile(context),
+  }),
   followSeriesById: defineAction({
     input: z.uuid(),
     handler: async (series_id, context) => {
