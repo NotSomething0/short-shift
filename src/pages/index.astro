@@ -1,16 +1,50 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import Features from "../components/Features.svelte";
 
-//const profile = await Astro.session?.get("profile");
+const features = [
+  {
+    title: "All Series. One Place.",
+    desc: "F1, MotoGP, IndyCar, WEC, IMSA and more no more jumping between 10 different apps.",
+    icon: "🏁",
+  },
+  {
+    title: "Your Time Zone. Always.",
+    desc: "Automatically converts every session to your local time. No more mental math at 3 AM.",
+    icon: "🌍",
+  },
+  {
+    title: "Filter What You Love",
+    desc: "Follow only the series and drivers you care about.",
+    icon: "🎯",
+  },
+  {
+    title: "Smart Notifications",
+    desc: "Set alarms and reminders for races you follow",
+    icon: "🔔",
+  },
+  {
+    title: "New Fan Friendly",
+    desc: "Confused where to watch? We show streaming/live TV options per country.",
+    icon: "👋",
+  },
+  {
+    title: "Cross Platform",
+    desc: "Built using modern web technologies Track Time leverages progressive web apps for Offline support, tiny bundle size, instant loading — even on slow connections.",
+    icon: "⚡",
+  },
+];
+
+const { data } = await Astro.locals.supabase.auth.getClaims();
+
+if (data?.claims.aud === "authenticated") return Astro.redirect("/app");
 ---
 
 <Layout title="Track Time | Never Miss Another Race">
   <header class="bg-black p-8">
     <nav class="flex justify-between items-center">
       <a href="/" class="text-4xl font-black italic tracking-tighter">
-        <span class="text-[#EF1A2D]">TRACK</span><span class="text-[#FF8000]"
-          >TIME</span
+        <span class="text-[#EF1A2D]">Short</span><span class="text-[#FF8000]"
+          >Shift</span
         >
       </a>
 
@@ -44,7 +78,39 @@ import Features from "../components/Features.svelte";
       </div>
     </section>
 
-    <Features />
+    <section id="features" class="py-24 px-6 bg-[#0a0a0a]">
+      <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-16">
+          <h2
+            class="text-5xl md:text-6xl font-black text-white mb-4 tracking-tight"
+          >
+            YOUR <span
+              class="bg-gradient-to-r from-[#FF2800] to-[#FF8000] bg-clip-text text-transparent"
+              >PIT WALL</span
+            > COMMAND CENTER
+          </h2>
+          <p class="text-gray-500 text-lg max-w-2xl mx-auto">
+            Everything you need to stay ahead of the pack.
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {
+            features.map((feature) => (
+              <div class="group bg-white/5 border border-white/10 rounded-2xl p-8 hover:border-[#FF8000] hover:bg-white/[0.07] transition-all hover:shadow-xl hover:shadow-[#FF2800]/10 hover:-translate-y-1">
+                <div class="w-14 h-14 bg-linear-to-br from-[#FF2800]/20 to-[#FF8000]/20 rounded-xl flex items-center justify-center text-3xl mb-5 group-hover:scale-110 transition-transform">
+                  {feature.icon}
+                </div>
+                <h3 class="text-xl font-bold text-white mb-3">
+                  {feature.title}
+                </h3>
+                <p class="text-gray-500 leading-relaxed">{feature.desc}</p>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </section>
   </main>
   <footer class="bg-[#040404] border-t border-zinc-900">
     <div class="py-16 px-6 max-w-7xl mx-auto">
