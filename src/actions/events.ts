@@ -28,7 +28,7 @@ export default {
     },
   }),
   getEventsBySeriesId: defineAction({
-    input: z.uuid(),
+    input: z.array(z.uuid()),
     handler: async (input, context) =>
       await db.getEventsBySeriesId(context, input),
   }),
