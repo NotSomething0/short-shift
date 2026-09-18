@@ -57,8 +57,15 @@
   });
 </script>
 
-<div class="bg-[#111111] border border-white/10 w-full p-6">
-  <h1 class="text-xl font-bold text-white mb-2">Events Manager</h1>
+<div class="bg-[#111111] border border-white/10 w-full p-4">
+  <div class="flex justify-between mb-2">
+    <h1 class="text-xl font-bold text-white">Events Manager</h1>
+    <button
+      onclick={() => console.log("not implemented yet")}
+      class="p-2 rounded-md bg-orange-600 hover:bg-orange-500 text-white font-bold cursor-pointer"
+      >Create Event</button
+    >
+  </div>
 
   <input
     type="text"
