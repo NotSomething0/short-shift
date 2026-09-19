@@ -4,178 +4,181 @@ export type Json =
   | boolean
   | null
   | { [key: string]: Json | undefined }
-  | Json[];
+  | Json[]
 
 export type Database = {
   // Allows to automatically instantiate createClient with right options
   // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
   __InternalSupabase: {
-    PostgrestVersion: "14.5";
-  };
+    PostgrestVersion: "14.5"
+  }
   graphql_public: {
     Tables: {
-      [_ in never]: never;
-    };
+      [_ in never]: never
+    }
     Views: {
-      [_ in never]: never;
-    };
+      [_ in never]: never
+    }
     Functions: {
       graphql: {
         Args: {
-          extensions?: Json;
-          operationName?: string;
-          query?: string;
-          variables?: Json;
-        };
-        Returns: Json;
-      };
-    };
+          extensions?: Json
+          operationName?: string
+          query?: string
+          variables?: Json
+        }
+        Returns: Json
+      }
+    }
     Enums: {
-      [_ in never]: never;
-    };
+      [_ in never]: never
+    }
     CompositeTypes: {
-      [_ in never]: never;
-    };
-  };
+      [_ in never]: never
+    }
+  }
   public: {
     Tables: {
       events: {
         Row: {
-          end_at: string;
-          id: string;
-          name: string;
-          series_id: string;
-          start_at: string;
-          timezone: string | null;
-          track: string | null;
-        };
+          end_at: string
+          id: string
+          name: string
+          series_id: string
+          session: string | null
+          start_at: string
+          timezone: string | null
+          track: string | null
+        }
         Insert: {
-          end_at: string;
-          id?: string;
-          name: string;
-          series_id: string;
-          start_at: string;
-          timezone?: string | null;
-          track?: string | null;
-        };
+          end_at: string
+          id?: string
+          name: string
+          series_id: string
+          session?: string | null
+          start_at: string
+          timezone?: string | null
+          track?: string | null
+        }
         Update: {
-          end_at?: string;
-          id?: string;
-          name?: string;
-          series_id?: string;
-          start_at?: string;
-          timezone?: string | null;
-          track?: string | null;
-        };
+          end_at?: string
+          id?: string
+          name?: string
+          series_id?: string
+          session?: string | null
+          start_at?: string
+          timezone?: string | null
+          track?: string | null
+        }
         Relationships: [
           {
-            foreignKeyName: "events_series_id_fkey";
-            columns: ["series_id"];
-            isOneToOne: false;
-            referencedRelation: "series";
-            referencedColumns: ["id"];
+            foreignKeyName: "events_series_id_fkey"
+            columns: ["series_id"]
+            isOneToOne: false
+            referencedRelation: "series"
+            referencedColumns: ["id"]
           },
-        ];
-      };
+        ]
+      }
       profile_followed_series: {
         Row: {
-          followed_at: string | null;
-          series_id: string;
-          user_id: string;
-        };
+          followed_at: string | null
+          series_id: string
+          user_id: string
+        }
         Insert: {
-          followed_at?: string | null;
-          series_id: string;
-          user_id: string;
-        };
+          followed_at?: string | null
+          series_id: string
+          user_id: string
+        }
         Update: {
-          followed_at?: string | null;
-          series_id?: string;
-          user_id?: string;
-        };
+          followed_at?: string | null
+          series_id?: string
+          user_id?: string
+        }
         Relationships: [
           {
-            foreignKeyName: "profile_followed_series_series_id_fkey";
-            columns: ["series_id"];
-            isOneToOne: false;
-            referencedRelation: "series";
-            referencedColumns: ["id"];
+            foreignKeyName: "profile_followed_series_series_id_fkey"
+            columns: ["series_id"]
+            isOneToOne: false
+            referencedRelation: "series"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "profile_followed_series_user_id_fkey";
-            columns: ["user_id"];
-            isOneToOne: false;
-            referencedRelation: "profiles";
-            referencedColumns: ["user_id"];
+            foreignKeyName: "profile_followed_series_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
           },
-        ];
-      };
+        ]
+      }
       profiles: {
         Row: {
-          is_admin: boolean | null;
-          user_id: string;
-          username: string | null;
-        };
+          is_admin: boolean | null
+          user_id: string
+          username: string | null
+        }
         Insert: {
-          is_admin?: boolean | null;
-          user_id?: string;
-          username?: string | null;
-        };
+          is_admin?: boolean | null
+          user_id?: string
+          username?: string | null
+        }
         Update: {
-          is_admin?: boolean | null;
-          user_id?: string;
-          username?: string | null;
-        };
-        Relationships: [];
-      };
+          is_admin?: boolean | null
+          user_id?: string
+          username?: string | null
+        }
+        Relationships: []
+      }
       series: {
         Row: {
-          category: Database["public"]["Enums"]["Series Category"] | null;
-          description: string | null;
-          id: string;
-          name: string;
-          next_event: string | null;
-          status: Database["public"]["Enums"]["Series Status"] | null;
-        };
+          category: Database["public"]["Enums"]["Series Category"] | null
+          description: string | null
+          id: string
+          name: string
+          next_event: string | null
+          status: Database["public"]["Enums"]["Series Status"] | null
+        }
         Insert: {
-          category?: Database["public"]["Enums"]["Series Category"] | null;
-          description?: string | null;
-          id?: string;
-          name: string;
-          next_event?: string | null;
-          status?: Database["public"]["Enums"]["Series Status"] | null;
-        };
+          category?: Database["public"]["Enums"]["Series Category"] | null
+          description?: string | null
+          id?: string
+          name: string
+          next_event?: string | null
+          status?: Database["public"]["Enums"]["Series Status"] | null
+        }
         Update: {
-          category?: Database["public"]["Enums"]["Series Category"] | null;
-          description?: string | null;
-          id?: string;
-          name?: string;
-          next_event?: string | null;
-          status?: Database["public"]["Enums"]["Series Status"] | null;
-        };
+          category?: Database["public"]["Enums"]["Series Category"] | null
+          description?: string | null
+          id?: string
+          name?: string
+          next_event?: string | null
+          status?: Database["public"]["Enums"]["Series Status"] | null
+        }
         Relationships: [
           {
-            foreignKeyName: "series_next_event_fkey";
-            columns: ["next_event"];
-            isOneToOne: false;
-            referencedRelation: "events";
-            referencedColumns: ["id"];
+            foreignKeyName: "series_next_event_fkey"
+            columns: ["next_event"]
+            isOneToOne: false
+            referencedRelation: "events"
+            referencedColumns: ["id"]
           },
-        ];
-      };
-    };
+        ]
+      }
+    }
     Views: {
-      [_ in never]: never;
-    };
+      [_ in never]: never
+    }
     Functions: {
-      authorize: { Args: never; Returns: boolean };
+      authorize: { Args: never; Returns: boolean }
       check_username_available: {
-        Args: { check_username: string };
-        Returns: boolean;
-      };
-      custom_access_token_hook: { Args: { event: Json }; Returns: Json };
-      get_types: { Args: { enum_type: string }; Returns: Json };
-    };
+        Args: { check_username: string }
+        Returns: boolean
+      }
+      custom_access_token_hook: { Args: { event: Json }; Returns: Json }
+      get_types: { Args: { enum_type: string }; Returns: Json }
+    }
     Enums: {
       "Series Category":
         | "Open-wheel"
@@ -186,38 +189,36 @@ export type Database = {
         | "One-make"
         | "Drag"
         | "Off-road"
-        | "Kart";
-      "Series Status": "Active" | "Off-season" | "Upcoming" | "Defunct";
-    };
+        | "Kart"
+        | "Motorcycle"
+      "Series Status": "Active" | "Off-season" | "Upcoming" | "Defunct"
+    }
     CompositeTypes: {
-      [_ in never]: never;
-    };
-  };
-};
+      [_ in never]: never
+    }
+  }
+}
 
-type DatabaseWithoutInternals = Omit<Database, "__InternalSupabase">;
+type DatabaseWithoutInternals = Omit<Database, "__InternalSupabase">
 
-type DefaultSchema = DatabaseWithoutInternals[Extract<
-  keyof Database,
-  "public"
->];
+type DefaultSchema = DatabaseWithoutInternals[Extract<keyof Database, "public">]
 
 export type Tables<
   DefaultSchemaTableNameOrOptions extends
     | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
     | { schema: keyof DatabaseWithoutInternals },
   TableName extends (DefaultSchemaTableNameOrOptions extends {
-    schema: keyof DatabaseWithoutInternals;
+    schema: keyof DatabaseWithoutInternals
   }
     ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
         DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
     : never) = never,
 > = DefaultSchemaTableNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals;
+  schema: keyof DatabaseWithoutInternals
 }
   ? (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
       DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])[TableName] extends {
-      Row: infer R;
+      Row: infer R
     }
     ? R
     : never
@@ -225,92 +226,95 @@ export type Tables<
         DefaultSchema["Views"])
     ? (DefaultSchema["Tables"] &
         DefaultSchema["Views"])[DefaultSchemaTableNameOrOptions] extends {
-        Row: infer R;
+        Row: infer R
       }
       ? R
       : never
-    : never;
+    : never
 
 export type TablesInsert<
   DefaultSchemaTableNameOrOptions extends
-    keyof DefaultSchema["Tables"] | { schema: keyof DatabaseWithoutInternals },
+    | keyof DefaultSchema["Tables"]
+    | { schema: keyof DatabaseWithoutInternals },
   TableName extends (DefaultSchemaTableNameOrOptions extends {
-    schema: keyof DatabaseWithoutInternals;
+    schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
     : never) = never,
 > = DefaultSchemaTableNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals;
+  schema: keyof DatabaseWithoutInternals
 }
   ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Insert: infer I;
+      Insert: infer I
     }
     ? I
     : never
   : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
     ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
-        Insert: infer I;
+        Insert: infer I
       }
       ? I
       : never
-    : never;
+    : never
 
 export type TablesUpdate<
   DefaultSchemaTableNameOrOptions extends
-    keyof DefaultSchema["Tables"] | { schema: keyof DatabaseWithoutInternals },
+    | keyof DefaultSchema["Tables"]
+    | { schema: keyof DatabaseWithoutInternals },
   TableName extends (DefaultSchemaTableNameOrOptions extends {
-    schema: keyof DatabaseWithoutInternals;
+    schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
     : never) = never,
 > = DefaultSchemaTableNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals;
+  schema: keyof DatabaseWithoutInternals
 }
   ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Update: infer U;
+      Update: infer U
     }
     ? U
     : never
   : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
     ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
-        Update: infer U;
+        Update: infer U
       }
       ? U
       : never
-    : never;
+    : never
 
 export type Enums<
   DefaultSchemaEnumNameOrOptions extends
-    keyof DefaultSchema["Enums"] | { schema: keyof DatabaseWithoutInternals },
+    | keyof DefaultSchema["Enums"]
+    | { schema: keyof DatabaseWithoutInternals },
   EnumName extends (DefaultSchemaEnumNameOrOptions extends {
-    schema: keyof DatabaseWithoutInternals;
+    schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
     : never) = never,
 > = DefaultSchemaEnumNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals;
+  schema: keyof DatabaseWithoutInternals
 }
   ? DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"][EnumName]
   : DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema["Enums"]
     ? DefaultSchema["Enums"][DefaultSchemaEnumNameOrOptions]
-    : never;
+    : never
 
 export type CompositeTypes<
   PublicCompositeTypeNameOrOptions extends
     | keyof DefaultSchema["CompositeTypes"]
     | { schema: keyof DatabaseWithoutInternals },
   CompositeTypeName extends (PublicCompositeTypeNameOrOptions extends {
-    schema: keyof DatabaseWithoutInternals;
+    schema: keyof DatabaseWithoutInternals
   }
     ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
     : never) = never,
 > = PublicCompositeTypeNameOrOptions extends {
-  schema: keyof DatabaseWithoutInternals;
+  schema: keyof DatabaseWithoutInternals
 }
   ? DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
   : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema["CompositeTypes"]
     ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
-    : never;
+    : never
 
 export const Constants = {
   graphql_public: {
@@ -328,8 +332,9 @@ export const Constants = {
         "Drag",
         "Off-road",
         "Kart",
+        "Motorcycle",
       ],
       "Series Status": ["Active", "Off-season", "Upcoming", "Defunct"],
     },
   },
-} as const;
+} as const
