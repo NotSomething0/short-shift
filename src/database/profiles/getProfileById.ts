@@ -1,24 +1,18 @@
-import type { AstroSession } from "astro";
-import { getSupabaseClient } from "../../lib/supabase";
+import { handlePostgrestError } from "../../lib/supabase";
+import type { ActionAPIContext } from "astro:actions";
 
-export default async (
-  session: AstroSession | undefined,
+export async function getProfileById(
+  context: ActionAPIContext,
   user_id: string,
-): Promise<any> => {
-  const supabase = getSupabaseClient(session);
-  const { data, error } = await supabase
+) {
+  const { data, error } = await context.locals.supabase
     .from("profiles")
     .select()
     .eq("user_id", user_id)
+    .limit(1)
     .single();
 
-  if (error) {
-    console.log(
-      "An error occured while trying to execute the getProfileById query",
-      error,
-    );
-    return [];
-  }
+  if (error) handlePostgrestError(error);
 
   return data;
-};
+}
