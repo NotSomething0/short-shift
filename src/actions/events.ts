@@ -6,13 +6,7 @@ import type { Event } from "../database/events";
 
 export default {
   createEvent: defineAction({
-    input: z.object({
-      name: z.string(),
-      start_at: z.coerce.date(),
-      end_at: z.coerce.date(),
-      series_id: z.string(),
-      timezone: z.string(),
-    }),
+    input: z.custom<Event>(),
     handler: async (input, context) => {
       const { data, error } = await context.locals.supabase.auth.getClaims();
 
