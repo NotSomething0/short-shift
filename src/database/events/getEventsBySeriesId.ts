@@ -13,6 +13,4 @@ export async function getEventsBySeriesId(
   if (error) handlePostgrestError(error);
 
   return data;
-
-  return data;
 }

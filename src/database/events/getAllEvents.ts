@@ -10,5 +10,3 @@ export async function getAllEvents(context: ActionAPIContext) {
 
   return data;
 }
-
-export type Events = NonNullable<Awaited<ReturnType<typeof getAllEvents>>>;
