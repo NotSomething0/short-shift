@@ -43,9 +43,19 @@ export default {
     },
   }),
   deleteEvent: defineAction({
-    input: z.string(),
+    input: z.uuid(),
     handler: async (input, context) => {
-      //return await db.deleteSeries(context.session, input);
+      const { data, error } = await context.locals.supabase.auth.getClaims();
+
+      if (error) handleAuthError(error);
+
+      if (!data?.claims.app_metadata?.admin)
+        throw new ActionError({
+          code: "UNAUTHORIZED",
+          message: "You are not authorized to perform this action.",
+        });
+
+      await db.deleteEventById(context, input);
     },
   }),
 };
