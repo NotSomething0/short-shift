@@ -1,7 +1,10 @@
 import { handlePostgrestError } from "$lib/supabase";
 import type { ActionAPIContext } from "astro:actions";
 
-export async function deleteEvent(context: ActionAPIContext, event_id: string) {
+export async function deleteEventById(
+  context: ActionAPIContext,
+  event_id: string,
+) {
   const { error } = await context.locals.supabase
     .from("events")
     .delete()
