@@ -4,7 +4,7 @@ import Layout from "../layouts/Layout.astro";
 const { data } = await Astro.locals.supabase.auth.getClaims();
 
 // We're already logged in send them to the dashboard
-if (data?.claims) return Astro.redirect("/home/dashboard");
+if (data?.claims.aud === "authenticated") return Astro.redirect("/app");
 
 const flash: string | null = (await Astro.session?.get("flash")) || null;
 ---
@@ -26,7 +26,7 @@ const flash: string | null = (await Astro.session?.get("flash")) || null;
     const LOGIN_DATA = new FormData(LOGIN_FORM);
     const { error } = await actions.authentication.signIn(LOGIN_DATA);
 
-    if (!error) return navigate("/home/dashboard");
+    if (!error) return navigate("/app");
 
     //TODO: Add flash message for errors
 
@@ -45,8 +45,8 @@ const flash: string | null = (await Astro.session?.get("flash")) || null;
   <header class="p-8 flex justify-center md:justify-start">
     <div class="text-4xl font-black italic tracking-tighter">
       <a href="/"
-        ><span class="text-[#FF2800]">TRACK</span><span class="text-[#FF8000]"
-          >TIME</span
+        ><span class="text-[#FF2800]">Short</span><span class="text-[#FF8000]"
+          >Shift</span
         ></a
       >
     </div>
