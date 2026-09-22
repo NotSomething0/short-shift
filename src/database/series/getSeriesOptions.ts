@@ -1,7 +1,7 @@
 import { handlePostgrestError } from "$lib/supabase";
 import type { ActionAPIContext } from "astro:actions";
 
-export default async (context: ActionAPIContext) => {
+export async function getSeriesOptions(context: ActionAPIContext) {
   const [statuses, categories] = await Promise.all([
     context.locals.supabase.rpc("get_types", {
       enum_type: "Series Status",
@@ -19,4 +19,4 @@ export default async (context: ActionAPIContext) => {
     statuses: statuses.data,
     categories: categories.data,
   };
-};
+}

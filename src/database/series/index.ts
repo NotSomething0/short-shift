@@ -1,11 +1,13 @@
-import type { Tables } from "../../types/supabase";
+import type { Tables, TablesInsert, TablesUpdate } from "../../types/supabase";
 
 export type Series = Tables<"series">;
+export type SeriesInsert = TablesInsert<"series">;
+export type SeriesUpdate = TablesUpdate<"series">;
 export type SeriesList = Series[];
 
-export { default as addSeries } from "./addSeries";
-export { default as getSeriesById } from "./getSeriesById";
+export { createSeries } from "./createSeries";
+export { getSeriesById } from "./getSeriesById";
 export { getAllSeries } from "./getAllSeries";
-export { default as updateSeries } from "./updateSeries";
-export { default as deleteSeriesById } from "./deleteSeriesById";
-export { default as getSeriesOptions } from "./getSeriesOptions";
+export { getSeriesOptions } from "./getSeriesOptions";
+export { updateSeries } from "./updateSeries";
+export { deleteSeriesById } from "./deleteSeriesById";

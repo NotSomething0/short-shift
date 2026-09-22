@@ -1,14 +1,16 @@
 import { handlePostgrestError } from "$lib/supabase";
 import type { ActionAPIContext } from "astro:actions";
 
-export default async(context: ActionAPIContext, seriesId: string) => {
-    const { data: series, error } = await context.locals.supabase
-        .from('series')
-        .select()
-        .eq('id', seriesId);
+export async function getSeriesById(
+  context: ActionAPIContext,
+  series_id: string,
+) {
+  const { data: series, error } = await context.locals.supabase
+    .from("series")
+    .select()
+    .eq("id", series_id);
 
-    if (error)
-        handlePostgrestError(error);
+  if (error) handlePostgrestError(error);
 
-    return series;
+  return series;
 }

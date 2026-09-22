@@ -5,12 +5,20 @@ import { handleAuthError } from "$lib/supabase";
 
 export default {
   createSeries: defineAction({
-    input: z.object({
-      name: z.string(),
-      description: z.string(),
-    }),
+    input: z.custom<db.SeriesInsert>(),
     handler: async (input, context) => {
-      return await db.addSeries(context, input);
+      const { data: claimsData, error: claimsError } =
+        await context.locals.supabase.auth.getClaims();
+
+      if (claimsError) handleAuthError(claimsError);
+
+      if (!claimsData?.claims?.app_metadata?.admin)
+        throw new ActionError({
+          code: "UNAUTHORIZED",
+          message: "Not authorized to preform this action.",
+        });
+
+      return await db.createSeries(context, input);
     },
   }),
   getSeriesById: defineAction({
@@ -43,6 +51,17 @@ export default {
   deleteSeriesById: defineAction({
     input: z.uuid(),
     handler: async (input, context) => {
+      const { data: claimsData, error: claimsError } =
+        await context.locals.supabase.auth.getClaims();
+
+      if (claimsError) handleAuthError(claimsError);
+
+      if (!claimsData?.claims.app_metadata?.admin)
+        throw new ActionError({
+          code: "UNAUTHORIZED",
+          message: "You are not authorized to perform this action",
+        });
+
       return await db.deleteSeriesById(context, input);
     },
   }),

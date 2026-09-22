@@ -1,8 +1,11 @@
-import type { Series } from ".";
+import type { SeriesInsert } from ".";
 import { type ActionAPIContext } from "astro:actions";
 import { handlePostgrestError } from "$lib/supabase";
 
-export async function updateSeries(context: ActionAPIContext, series: Series) {
+export async function createSeries(
+  context: ActionAPIContext,
+  series: SeriesInsert,
+) {
   const { data, error } = await context.locals.supabase
     .from("series")
     .upsert(series)
