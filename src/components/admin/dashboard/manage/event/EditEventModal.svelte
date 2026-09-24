@@ -12,6 +12,7 @@
     end_at: "",
     timezone: "",
     track: "",
+    session: "",
   });
 
   $effect(() => {
@@ -57,6 +58,16 @@
           type="text"
           class="w-full px-4 py-2 rounded-xl bg-white/5 text-white focus:outline-none mt-1"
           bind:value={draft.name}
+        />
+      </label>
+
+      <label for="session" class="text-white flex flex-col mb-1">
+        Session:
+        <input
+          name="session"
+          type="text"
+          class="w-full px-4 py-2 rounded-xl bg-white/5 text-white focus:outline-none mt-1"
+          bind:value={draft.session}
         />
       </label>
 
