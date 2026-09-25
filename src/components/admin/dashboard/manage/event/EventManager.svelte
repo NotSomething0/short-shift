@@ -10,9 +10,18 @@
   let loadingError = $state(false);
   let allEvents: Events = $state([]);
   let filteredEvents = $derived(
-    allEvents.filter((event) =>
-      event.name.toLocaleLowerCase().includes(searchQuery.toLocaleLowerCase()),
-    ),
+    allEvents
+      .filter((event) =>
+        event.name
+          .toLocaleLowerCase()
+          .includes(searchQuery.toLocaleLowerCase()),
+      )
+      .map((event) => ({
+        ...event,
+        _parsedDate: new Date(event.start_at).getTime(),
+      }))
+      .sort((a, b) => b._parsedDate - a._parsedDate)
+      .map(({ _parsedDate, ...rest }) => rest),
   );
   let currentPage = $state(0);
   let totalPages = $derived(Math.ceil(filteredEvents.length / EVENTS_PER_PAGE));
@@ -81,7 +90,7 @@
       <thead>
         <tr class="text-white uppercase font-semibold">
           <th class="p-4">Name</th>
-          <th class="p-4">Track</th>
+          <th class="p-4">Session</th>
           <th class="p-4">Starts</th>
           <th class="p-4">Actions</th>
         </tr>
@@ -109,10 +118,8 @@
                 {pagedEvent.name}
               </th>
               <td class="text-center">
-                <span
-                  class="px-2 py-1 rounded-md bg-[#00A0DE]/10 text-[#00A0DE] border border-[#00A0DE]/20"
-                >
-                  {pagedEvent.track ?? "Not set"}
+                <span class="text-center text-white">
+                  {pagedEvent.session ?? "Not set"}
                 </span>
               </td>
               <td class="text-center text-white"
