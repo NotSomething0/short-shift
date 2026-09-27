@@ -33,6 +33,11 @@ export function handleAuthError(error: AuthError): never {
         code: "UNPROCESSABLE_CONTENT",
         message: error.message,
       });
+    case "invalid_credentials":
+      throw new ActionError({
+        code: "UNAUTHORIZED",
+        message: "Invalid login credentials",
+      });
     default:
       console.log(
         "An error occured while handling auth related shit that we don't handle directly",
