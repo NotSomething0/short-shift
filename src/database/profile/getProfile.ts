@@ -2,34 +2,33 @@ import { handleAuthError, handlePostgrestError } from "$lib/supabase";
 import { ActionError, type ActionAPIContext } from "astro:actions";
 
 export async function getProfile(context: ActionAPIContext) {
-  let profile = await context.session?.get("profile");
+  const profile = await context.session?.get("profile");
 
-  if (!profile) {
-    const {
-      data: { user },
-      error,
-    } = await context.locals.supabase.auth.getUser();
+  if (profile) return profile;
 
-    if (error) handleAuthError(error);
+  const {
+    data: { user },
+    error,
+  } = await context.locals.supabase.auth.getUser();
 
-    if (!user)
-      throw new ActionError({
-        code: "UNAUTHORIZED",
-        message: "You are not authorized to perform this action.",
-      });
+  if (error) handleAuthError(error);
 
-    const { data, error: profileError } = await context.locals.supabase
-      .from("profiles")
-      .select()
-      .eq("user_id", user.id)
-      .limit(1)
-      .single();
+  if (!user)
+    throw new ActionError({
+      code: "UNAUTHORIZED",
+      message: "You are not authorized to perform this action.",
+    });
 
-    if (profileError) handlePostgrestError(profileError);
+  const { data, error: profileError } = await context.locals.supabase
+    .from("profiles")
+    .select()
+    .eq("user_id", user.id)
+    .limit(1)
+    .single();
 
-    profile = data;
-    context.session?.set("profile", data);
-  }
+  if (profileError) handlePostgrestError(profileError);
 
-  return profile;
+  context.session?.set("profile", data);
+
+  return data;
 }
