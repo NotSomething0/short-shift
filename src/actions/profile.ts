@@ -1,11 +1,23 @@
 import { ActionError, defineAction } from "astro:actions";
 import { z } from "astro/zod";
-import { handlePostgrestError } from "$lib/supabase";
+import { handleAuthError, handlePostgrestError } from "$lib/supabase";
 import * as profile from "../database/profile";
 
 export default {
   getProfile: defineAction({
-    handler: async (_, context) => await profile.getProfile(context),
+    handler: async (_, context) => {
+      const { data, error } = await context.locals.supabase.auth.getClaims();
+
+      if (error) handleAuthError(error);
+
+      if (data?.claims.aud !== "authenticated")
+        throw new ActionError({
+          code: "UNAUTHORIZED",
+          message: "You are not authorized to perform this action.",
+        });
+
+      return await profile.getProfile(context);
+    },
   }),
   followSeriesById: defineAction({
     input: z.uuid(),
