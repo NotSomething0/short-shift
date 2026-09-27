@@ -13,4 +13,7 @@ declare namespace App {
       import("./types/supabase").Database
     >;
   }
+  interface SessionData {
+    profile: import("./types/supabase").Tables<"profiles">;
+  }
 }
