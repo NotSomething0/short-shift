@@ -19,6 +19,21 @@ export default {
       return await profile.getProfile(context);
     },
   }),
+  getFollowedSeries: defineAction({
+    handler: async (_, context) => {
+      const { data, error } = await context.locals.supabase.auth.getClaims();
+
+      if (error) handleAuthError(error);
+
+      if (data?.claims.aud !== "authenticated")
+        throw new ActionError({
+          code: "UNAUTHORIZED",
+          message: "You are not authorized to perform this action.",
+        });
+
+      return await profile.getFollowedSeries(context);
+    },
+  }),
   followSeriesById: defineAction({
     input: z.uuid(),
     handler: async (series_id, context) => {
