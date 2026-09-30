@@ -1,30 +1,5 @@
-import type { APIContext } from "astro";
 import type { AuthError, PostgrestError } from "@supabase/supabase-js";
-import { createServerClient, parseCookieHeader } from "@supabase/ssr";
-import { ActionError, type ActionAPIContext } from "astro:actions";
-import type { Database } from "../types/supabase";
-
-export const getSupabaseClient = (context: APIContext | ActionAPIContext) => {
-  return createServerClient<Database>(
-    import.meta.env.SUPABASE_URL,
-    import.meta.env.SUPABASE_PUBLISHABLE_KEY,
-    {
-      cookies: {
-        getAll() {
-          return parseCookieHeader(context.request.headers.get("Cookie") ?? "");
-        },
-        setAll(cookiesToSet: { name: string; value: string }[]) {
-          cookiesToSet.forEach(({ name, value }) => {
-            context.cookies.set(name, value, {
-              path: "/",
-              secure: import.meta.env.PROD,
-            });
-          });
-        },
-      },
-    },
-  );
-};
+import { ActionError} from "astro:actions";
 
 export function handleAuthError(error: AuthError): never {
   switch (error.code) {
