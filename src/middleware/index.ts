@@ -1,5 +1,5 @@
 import { sequence } from "astro:middleware";
 import protectAdminPaths from "./admin/protectAdminPaths";
-import auth from "./auth";
+import supabase from "./supabase";
 
-export const onRequest = sequence(auth, protectAdminPaths);
+export const onRequest = sequence(supabase, protectAdminPaths);
