@@ -76,6 +76,8 @@ export default {
         if (data) context.session?.set("profile", data);
       }
 
+      context.session?.delete("alert")
+
       return { success: true };
     },
   }),
