@@ -76,7 +76,7 @@ export default {
         if (data) context.session?.set("profile", data);
       }
 
-      context.session?.delete("alert")
+      context.session?.delete("alert");
 
       return { success: true };
     },
@@ -88,6 +88,22 @@ export default {
       if (error) {
         handleAuthError(error);
       }
+
+      return { success: true };
+    },
+  }),
+  forgotPassword: defineAction({
+    input: z.object({
+      email: z.email(),
+    }),
+    accept: "form",
+    handler: async (input, context: ActionAPIContext) => {
+      const { error } =
+        await context.locals.supabase.auth.resetPasswordForEmail(input.email, {
+          redirectTo: "/update-password",
+        });
+
+      if (error) handleAuthError(error);
 
       return { success: true };
     },

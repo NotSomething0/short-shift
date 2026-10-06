@@ -1,5 +1,5 @@
 import type { AuthError, PostgrestError } from "@supabase/supabase-js";
-import { ActionError} from "astro:actions";
+import { ActionError } from "astro:actions";
 
 export function handleAuthError(error: AuthError): never {
   switch (error.code) {
@@ -12,6 +12,11 @@ export function handleAuthError(error: AuthError): never {
       throw new ActionError({
         code: "UNAUTHORIZED",
         message: "Invalid login credentials",
+      });
+    case "over_email_send_rate_limit":
+      throw new ActionError({
+        code: "TOO_MANY_REQUESTS",
+        message: "Reset email already sent. Please wait before retrying.",
       });
     default:
       console.log(
