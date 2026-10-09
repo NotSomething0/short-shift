@@ -100,10 +100,39 @@ export default {
     handler: async (input, context: ActionAPIContext) => {
       const { error } =
         await context.locals.supabase.auth.resetPasswordForEmail(input.email, {
-          redirectTo: "/update-password",
+          redirectTo: "http://localhost:4321/update-password",
         });
 
       if (error) handleAuthError(error);
+
+      return { success: true };
+    },
+  }),
+  updatePassword: defineAction({
+    accept: "form",
+    input: z.object({
+      password: z.string(),
+    }),
+    handler: async (input, context: ActionAPIContext) => {
+      const { data: claimsData, error: claimsAuthError } =
+        await context.locals.supabase.auth.getClaims();
+
+      if (claimsAuthError) handleAuthError(claimsAuthError);
+
+      if (claimsData?.claims.aud !== "authenticated")
+        throw new ActionError({
+          code: "UNAUTHORIZED",
+          message: "You are not authorized to perform this action.",
+        });
+
+      const { data, error } = await context.locals.supabase.auth.updateUser({
+        password: input.password,
+      });
+
+      if (error) handleAuthError(error)
+
+      console.log("Data after calling updateUser", data);
+      console.log("error after calling updateUser", error);
 
       return { success: true };
     },
