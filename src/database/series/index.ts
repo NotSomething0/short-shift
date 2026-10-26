@@ -4,6 +4,7 @@ export type Series = Tables<"series">;
 export type SeriesInsert = TablesInsert<"series">;
 export type SeriesUpdate = TablesUpdate<"series">;
 export type SeriesList = Series[];
+export type SeriesOption = Pick<Series, "id" | "name">;
 
 export { createSeries } from "./createSeries";
 export { getSeriesById } from "./getSeriesById";
