@@ -27,6 +27,21 @@ export default {
       return await db.getSeriesById(context, input);
     },
   }),
+  getSeriesList: defineAction({
+    handler: async (_, context) => {
+      const { data, error } = await context.locals.supabase.auth.getClaims();
+
+      if (error) handleAuthError(error);
+
+      if (data?.claims.aud !== "authenticated")
+        throw new ActionError({
+          code: "UNAUTHORIZED",
+          message: "You are not authorized to perform this action.",
+        });
+
+      return db.getSeriesList(context);
+    },
+  }),
   getAllSeries: defineAction({
     handler: async (_, context) => {
       return await db.getAllSeries(context);
