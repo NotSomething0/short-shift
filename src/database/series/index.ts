@@ -8,6 +8,7 @@ export type SeriesList = Series[];
 export { createSeries } from "./createSeries";
 export { getSeriesById } from "./getSeriesById";
 export { getAllSeries } from "./getAllSeries";
+export { getSeriesList } from "./getSeriesList";
 export { getSeriesOptions } from "./getSeriesOptions";
 export { updateSeries } from "./updateSeries";
 export { deleteSeriesById } from "./deleteSeriesById";
