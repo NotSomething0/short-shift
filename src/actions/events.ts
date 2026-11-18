@@ -2,11 +2,11 @@ import { ActionError, defineAction } from "astro:actions";
 import { z } from "astro/zod";
 import * as db from "../database/events";
 import { handleAuthError } from "$lib/supabase";
-import type { Event } from "../database/events";
+import type { Event, EventInsert } from "../database/events";
 
 export default {
   createEvent: defineAction({
-    input: z.custom<Event>(),
+    input: z.custom<EventInsert>(),
     handler: async (input, context) => {
       const { data, error } = await context.locals.supabase.auth.getClaims();
 
