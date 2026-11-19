@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { type Event } from "../../../../../types/database";
+  import type { Event } from "../../../../../database/events";
   import EditEventModal from "../event/EditEventModal.svelte";
 
   let { eventData, onRemove, onEdit } = $props();
