@@ -3,7 +3,7 @@ import Layout from "../layouts/Layout.astro";
 
 const { data } = await Astro.locals.supabase.auth.getClaims();
 
-if (data?.claims) return Astro.redirect("/home/dashboard");
+if (data?.claims) return Astro.redirect("/app");
 ---
 
 <script>
@@ -37,8 +37,6 @@ if (data?.claims) return Astro.redirect("/home/dashboard");
 
     const SIGN_UP_DATA = new FormData(SIGN_UP_FORM);
 
-    console.log(SIGN_UP_DATA.get("password"));
-
     const { error } = await actions.authentication.signUp(SIGN_UP_DATA);
 
     if (error) {
@@ -58,8 +56,8 @@ if (data?.claims) return Astro.redirect("/home/dashboard");
   <header class="p-8 flex justify-center md:justify-start">
     <div class="text-4xl font-black italic tracking-tighter">
       <a href="/"
-        ><span class="text-[#FF2800]">TRACK</span><span class="text-[#FF8000]"
-          >TIME</span
+        ><span class="text-[#FF2800]">Short</span><span class="text-[#FF8000]"
+          >Shift</span
         ></a
       >
     </div>
